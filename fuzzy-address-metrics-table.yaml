@@ -1,0 +1,30 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'DynamoDB table for tracking fuzzy address matching metrics'
+
+Resources:
+  FuzzyAddressMetricsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: FuzzyAddressMetrics
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: metric_name
+          AttributeType: S
+        - AttributeName: variation_type
+          AttributeType: S
+      KeySchema:
+        - AttributeName: metric_name
+          KeyType: HASH
+        - AttributeName: variation_type
+          KeyType: RANGE
+      Tags:
+        - Key: Purpose
+          Value: AddressMatchingMetrics
+
+Outputs:
+  TableName:
+    Description: Name of the DynamoDB table
+    Value: !Ref FuzzyAddressMetricsTable
+  TableArn:
+    Description: ARN of the DynamoDB table
+    Value: !GetAtt FuzzyAddressMetricsTable.Arn 
